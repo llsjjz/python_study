@@ -1,0 +1,9 @@
+2026-05-18 学习重点总结
+=========================
+
+1. Python 发展历史
+   - 了解了 Python 语言的起源和发展历程
+
+2. 第一个程序
+   - 编写并运行了经典的 "Hello, World!" 程序（hello_world.py）
+   - 掌握了 Python 程序的基本运行方式：python hello_world.py
