@@ -87,3 +87,61 @@
 8. 列表嵌套（列表_2.py）
    - 二维列表：[[1,2,3], [4,5,6], [7,8,9]]
    - 通过双重索引访问：list[行][列]
+
+2026-05-22 学习重点总结
+=========================
+
+1. 元组（元组.py）
+   - 定义：用 () 或直接逗号分隔，如 t = (1, 2, 3) 或 t = 1, 2, 3
+   - 单元素元组必须加逗号：(1,)，否则 (1) 是 int
+   - 支持索引、切片、+ 拼接、* 重复、比较运算（与列表类似）
+   - **不可变**：创建后不能修改，因此创建和访问速度比列表更快（timeit 验证）
+   - 打包与解包：a, b, c = t，支持 * 收集剩余元素（如 a, b, *c = t）
+   - 解包字符串：a, b, c, d, e = 'hello'
+   - 交换变量：a, b, c = c, a, b（无需临时变量）
+   - 与列表互转：tuple(list)、list(tuple)
+
+2. 字符串（字符串.py）
+   - 定义：单引号、双引号、三引号（多行），\ 续行符
+   - 转义字符：\n \t \\ \' 等；原始字符串 r'...' 忽略转义
+   - 特殊表示：\ooo（八进制）、\xhh（十六进制）、\uXXXX（Unicode）
+   - 运算：+ 拼接、* 重复、+= 和 *= 复合赋值
+   - 比较运算：按字符 Unicode 编码逐个比较（ord() 获取编码值）
+   - 成员运算：in / not in 判断子串
+   - len() 获取长度，索引和切片同列表
+   - 遍历：for i in range(len(s)) 或 for ch in s
+   - 大小写：capitalize()、title()、upper()、lower()（返回新串，不修改原串）
+   - 查找：find()（找不到返回-1）、index()（找不到抛异常）、rfind()、rindex() 从右查找
+   - 性质判断：startswith()、endswith()、isdigit()、isalpha()、isalnum()、islower()
+   - 格式化：center()、rjust()、ljust()、zfill()、% 占位符、str.format()、f-string
+   - 修剪：strip()、lstrip()、rstrip() 去除空白或指定字符
+   - 替换：replace(old, new, count)
+   - 拆分与合并：split(sep, maxsplit)、join(iterable)
+   - 编码解码：encode('utf-8'/'gbk') → bytes，decode() → str
+
+3. 集合（集合.py）
+   - 创建：{1, 2, 3}、set('hello')、set([...])、集合生成式
+   - 特性：**无序、不重复**，自动去重
+   - 成员运算：in / not in
+   - 交集 & / intersection()、并集 | / union()、差集 - / difference()、对称差 ^ / symmetric_difference()
+   - 复合赋值：|=、&=、-= 以及对应的 update 方法
+   - 比较运算：< <= > >= 判断子集/超集；issubset()、issuperset()
+   - 方法：add()、discard()（无元素不报错）、remove()（无元素报错）、clear()
+   - isdisjoint()：判断两集合是否不相交
+   - 不可变集合：frozenset()，支持集合运算但不能增删
+
+4. 字典（字典.py）
+   - 创建：{'key': 'value'}、dict(name='王大锤', age=55)、dict(zip(keys, values))、字典生成式
+   - 键值对，键唯一；嵌套字典、列表可作为值
+   - 成员运算：in / not in 判断键是否存在
+   - 索引运算：person['name'] 获取/修改值，赋值不存在的键即新增
+   - 遍历：for key in person 或 for key, value in person.items()
+   - 方法：
+     - get(key, default)：安全获取，键不存在返回 None 或指定默认值
+     - keys()、values()、items()：返回字典视图
+     - update() 或 |=：合并字典（相同键覆盖）
+     - pop(key)、popitem()：删除并返回值
+     - clear()、del dict[key]
+   - 综合实例：
+     - 字母频率统计：counter.get(ch, 0) + 1，sorted() 按值排序
+     - 字典生成式筛选：{k: v for k, v in d.items() if v > 100}
