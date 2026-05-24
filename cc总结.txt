@@ -186,3 +186,55 @@
      - std() 标准差（方差开方）
      - cv() 变异系数（标准差 / 均值）
    - 双色球选号：random.sample() 无放回抽取红球，random.choice() 抽取蓝球，ANSI 转义序列实现彩色终端输出
+
+2026-05-24 学习重点总结
+=========================
+
+1. 高阶函数（函数使用进阶.py）
+   - 函数作为参数传递：def calc(init_value, op_func, *args, **kwargs)，op_func 是一个函数对象
+   - map(func, iterable)：对可迭代对象每个元素执行函数，返回 map 对象
+   - filter(func, iterable)：过滤掉不满足条件的元素，返回 filter 对象
+   - map 和 filter 可链式组合：map(square, filter(is_even, old_nums))
+   - sorted(iterable, key=func)：按 key 指定的规则排序，如 key=len 按长度排序
+   - sorted() 返回新列表（不修改原对象）vs list.sort() 就地排序
+
+2. Lambda 表达式（匿名函数）（函数使用进阶.py）
+   - 语法：lambda 参数: 表达式，表达式结果自动作为返回值，无需写 return
+   - 多参数：lambda x, y: x + y
+   - 常用于 map/filter/sorted 等需要简短函数的场景，避免单独定义函数
+   - 组合示例：lambda + filter + map 一行完成"过滤偶数 → 求平方"
+   - 进阶一行代码：
+     - 阶乘函数：lambda n: functools.reduce(operator.mul, range(2, n+1), 1)
+       - functools.reduce(func, seq, initial)：对序列元素累积调用二元函数
+       - operator.mul 等价于 lambda x, y: x * y
+     - 质数判断：lambda x: all(map(lambda f: x % f, range(2, int(x**0.5)+1)))
+       - all()：所有元素为 True 才返回 True
+       - x % f 非零表示不能整除，对所有 f 都不能整除即为质数
+
+3. 偏函数（函数使用进阶.py）
+   - functools.partial(func, **kwargs)：固定函数的部分参数，返回新函数
+   - 典型应用：int2 = functools.partial(int, base=2)，将 base 参数固定为 2
+   - int2('1001') → 9（将字符串按二进制解析），int8('1001') → 513（八进制），int16('1001') → 4097（十六进制）
+
+4. 装饰器（函数高级应用.py）
+   - 核心概念：装饰器是一个函数，接收一个函数作为参数，返回一个新函数（通常添加了额外功能）
+   - 基本模式：
+     def decorator(func):
+         def wrapper(*args, **kwargs):
+             # 前置操作
+             result = func(*args, **kwargs)
+             # 后置操作
+             return result
+         return wrapper
+   - 实例：record_time 装饰器，在执行函数前后记录时间，计算并打印执行耗时
+   - @wraps(func)：functools.wraps 装饰器，用于还原被装饰函数的元信息（__name__、__doc__ 等）
+   - 语法糖：@decorator_name 放在函数定义上方，等价于 func = decorator(func)
+   - __wrapped__ 属性：被装饰后仍可通过 func.__wrapped__(...) 调用原始未装饰的函数
+
+5. 递归调用（函数高级应用.py）
+   - 函数内部调用自身，用于将大问题分解为相同结构的小问题
+   - 两个关键要素：
+     - 基准条件（Base Case）：终止递归的条件，防止无限递归（如 n == 0 返回 1）
+     - 递归条件（Recursive Case）：将问题规模缩小并再次调用自身（如 n * factorial(n-1)）
+   - 实例：阶乘 factorial(5) = 5 × 4 × 3 × 2 × 1 = 120
+   - 递归调用过程：factorial(5) → 5×factorial(4) → ... → 5×4×3×2×1×factorial(0) → 回溯返回结果
