@@ -238,3 +238,61 @@
      - 递归条件（Recursive Case）：将问题规模缩小并再次调用自身（如 n * factorial(n-1)）
    - 实例：阶乘 factorial(5) = 5 × 4 × 3 × 2 × 1 = 120
    - 递归调用过程：factorial(5) → 5×factorial(4) → ... → 5×4×3×2×1×factorial(0) → 回溯返回结果
+
+2026-05-25 学习重点总结
+=========================
+
+1. 类与对象基础（面向对象编程入门.py）
+   - 类的定义：class ClassName，方法第一个参数必须是 self（代表当前对象）
+   - 创建对象：obj = ClassName()，每个对象在内存中有独立地址（id() / hex() 查看）
+   - 两种调用方式：
+     - ClassName.method(obj, args) — 通过类调用，显式传入对象
+     - obj.method(args) — 通过对象调用，自动传入 self
+   - 初始化方法 __init__(self, ...)：创建对象时自动调用，用于设置初始属性值
+   - 实例：Student 类 — 定义 name/age 属性，study() 和 play() 方法
+   - 魔法方法 __str__(self)：定义 print(obj) 时的字符串表示，方便调试输出
+
+2. 面向对象案例练习（面向对象编程入门.py）
+   - 数字时钟 Clock 类：
+     - hour/min/sec 属性表示时间，有默认值（0, 0, 0）
+     - run() 方法模拟走字：秒进位 → 分进位 → 时进位（24 小时制归零）
+     - show() 方法格式化输出：f'{h:0>2d}:{m:0>2d}:{s:0>2d}'（两位补零显示）
+   - 平面点 Point 类：
+     - x/y 属性表示坐标
+     - distance_to(other) 方法：计算两点之间的欧几里得距离 √((x₁-x₂)² + (y₁-y₂)²)
+
+3. 可见性与属性控制（面向对象编程进阶.py）
+   - __ 双下划线开头：私有属性/方法，外部无法直接访问（名称改写为 _ClassName__attr）
+   - _ 单下划线开头：受保护属性，约定不直接访问但语法上仍可访问
+   - 动态属性：默认情况下可随时给对象添加新属性，如 obj.new_attr = value
+   - __slots__ 限制动态属性：class 中定义 __slots__ = ('attr1', 'attr2')，限定对象只能有这些属性，可节省内存
+
+4. 静态方法与属性装饰器（面向对象编程进阶.py）
+   - @staticmethod：静态方法，不需要 self 参数，通过类名直接调用，如 Triangle.is_valid(a, b, c)（对象未创建时就能用）
+   - @property：把方法转为属性访问，调用时不加括号，如 t.perimeter（而非 t.perimeter()）
+   - 应用：Triangle 类 — is_valid() 静态方法判断三边能否构成三角形，perimeter 和 area 用 @property 装饰成只读属性
+
+5. 继承与多态（面向对象编程进阶.py）
+   - 继承语法：class Child(Parent)，子类继承父类的所有属性和方法
+   - super().__init__(...)：在子类构造器中调用父类构造器，初始化继承来的属性
+   - 子类扩展：可添加自己特有的属性和方法（如 Teacher 新增 title 属性和 teach() 方法）
+   - 多态：不同子类对象调用同一个方法名，执行各自不同的实现
+   - 实例：Person（基类）→ Student 和 Teacher（子类），共享 eat()/sleep()，各自有 study()/teach()
+
+6. 面向对象综合应用（面向对象编程应用.py）
+   - 扑克牌发牌系统：
+     - Enum 枚举类定义花色常量（SPADE, HEART, CLUB, DIAMOND）
+     - Card 类：suite（花色）+ face（点数），__repr__() 用花色符号和点数字符组成牌面显示
+     - __lt__() 实现卡牌大小比较：同花色比点数，不同花色比花色值
+     - Poker 类：列表生成式创建 52 张牌，shuffle() 洗牌（random.shuffle），deal() 发牌
+     - @property 装饰 has_next 判断是否还有牌可发
+     - Player 类：name 属性 + cards 列表，get_one() 摸牌，arrange() 用 sort() 整理手牌
+     - 完整流程：洗牌 → 4 位玩家轮流发牌 13 轮 → 每人 13 张 → 整理后输出
+   - 工资结算系统：
+     - 抽象基类（ABC）：ABCMeta 元类 + @abstractmethod 装饰器定义抽象方法 get_salary()，抽象类不能实例化
+     - 子类必须实现抽象方法：
+       - Manager：固定月薪 15000
+       - Programmer：按时计薪 200元/小时 × working_hour
+       - Salesman：底薪 1800 + 销售额 × 5% 提成
+     - 多态体现：统一调用 emp.get_salary()，不同类型的员工返回各自计算方式的结果
+     - isinstance(obj, Class) 运行时判断对象类型，根据类型设置不同属性（工作时长 or 销售额）
